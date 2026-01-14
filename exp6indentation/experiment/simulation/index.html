@@ -46,7 +46,10 @@
     <button class="primary" id="indent" onclick="movedown()">Indent</button>
     <button class="primary" id="reset" onclick="moveup('./base2-1.png')">Remove load</button>
     <button class="primary"  id="display3d" onclick="display3d()">Three Dimentional View</button>
+    <button class="primary"  id="formula" onclick="showformula()">Formulae Use</button>
   </aside>
+
+
 
   <!-- Simulation Area -->
   <section class="simulation">
@@ -75,6 +78,81 @@
   </section>
 
 </div>
+
+
+<!-- Formula Popup -->
+<div id="formulaModal" class="formula-modal">
+  <div class="formula-box">
+
+    <!-- Close Button -->
+    <span class="close-btn" onclick="closeFormula()">✖</span>
+
+    <h3>Nano-Indentation Formulae</h3>
+
+    <div class="formula-content">
+
+      <p><b>Contact Depth</b></p>
+      <div class="formula">
+        h<sub>c</sub> = h − ε
+        <span class="frac">
+          <span>P</span>
+          <span>S</span>
+        </span>
+      </div>
+      <p>
+        where <b>h</b> is maximum indentation depth,  
+        <b>P</b> is maximum load,  
+        <b>S</b> is unloading stiffness,  
+        <b>ε ≈ 0.75</b> (Berkovich indenter).
+      </p>
+
+      <hr>
+
+      <p><b>Projected Contact Area</b></p>
+      <div class="formula">
+        A = f(h<sub>c</sub>)
+      </div>
+      <p>
+        Area function depends on indenter geometry.
+      </p>
+
+      <hr>
+
+      <p><b>Hardness</b></p>
+      <div class="formula">
+        H =
+        <span class="frac">
+          <span>P</span>
+          <span>A</span>
+        </span>
+      </div>
+      <p>
+        Ratio of maximum load to projected contact area.
+      </p>
+
+      <hr>
+
+      <p><b>Elastic Modulus</b></p>
+      <div class="formula">
+        E =
+        <span class="frac">
+          <span>√π</span>
+          <span>2</span>
+        </span>
+        ·
+        <span class="frac">
+          <span>S</span>
+          <span>√A</span>
+        </span>
+      </div>
+      <p>
+        Calculated using unloading stiffness method.
+      </p>
+
+    </div>
+  </div>
+</div>
+
 
 <script src="./js/main.js"></script>
 </body>

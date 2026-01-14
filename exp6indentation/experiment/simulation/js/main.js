@@ -12,11 +12,11 @@ function resetExperiment() {
 
 
 let heading = document.getElementById('heading');
- let svgContainer = document.querySelector('.svg-container');
- let pointer = document.querySelector('.pointer')
-function  display2d(){
-  heading.innerText= '2D view'
-svgContainer.innerHTML = `        <div class="svg-base">
+let svgContainer = document.querySelector('.svg-container');
+let pointer = document.querySelector('.pointer')
+function display2d() {
+  heading.innerText = '2D view'
+  svgContainer.innerHTML = `        <div class="svg-base">
 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
   <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
   <defs>
@@ -51,7 +51,7 @@ svgContainer.innerHTML = `        <div class="svg-base">
   </g>
 </svg>
 </div>`
-setTimeout(initGraph, 0);
+  setTimeout(initGraph, 0);
 
 }
 
@@ -118,7 +118,7 @@ function movedown() {
   const pointer = document.querySelector('.pointer');
   if (!pointer) return;
 
-  pointer.style.transform = "translateY(50px)";
+  pointer.style.transform = "translateY(85px)";
   drawLoadingCurve();
 
 }
@@ -178,7 +178,7 @@ function drawLoadingCurve() {
       peakPoint = loadingPoints[loadingPoints.length - 1];
       clearInterval(interval);
     }
-  }, 60); // slow & smooth (loading)
+  }, 95); // slow & smooth (loading)
 }
 
 function drawUnloadingCurve() {
@@ -200,36 +200,67 @@ function drawUnloadingCurve() {
     ctx.beginPath();
     unloadingPoints = [];
 
-for (let t = 0; t <= unloadProgress; t += 0.02) {
-  const x = peakPoint.x - gWidth * 0.35 * t;
+    for (let t = 0; t <= unloadProgress; t += 0.02) {
+      const x = peakPoint.x - gWidth * 0.35 * t;
 
-  // 🔥 This guarantees the declination meets X-axis
-  const y = peakPoint.y + (origin.y - peakPoint.y) * t;
+      // 🔥 This guarantees the declination meets X-axis
+      const y = peakPoint.y + (origin.y - peakPoint.y) * t;
 
-  unloadingPoints.push({ x, y });
+      unloadingPoints.push({ x, y });
 
-  if (t === 0) ctx.moveTo(x, y);
-  else ctx.lineTo(x, y);
-}
-
-
+      if (t === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    if (unloadProgress >= 1) {
+      ctx.lineTo(
+        peakPoint.x - gWidth * 0.35,
+        origin.y
+      );
+    }
 
     ctx.stroke();
+
 
     // 🔵 draw slope S (tangent)
     drawSlopeS();
 
     ctx.fillStyle = "#000";
-ctx.fillText(
-  "Max Depth, Max Load",
-  peakPoint.x - 70,
-  peakPoint.y - 10
-);
+    ctx.fillText(
+      "Max Depth, Max Load",
+      peakPoint.x - 70,
+      peakPoint.y - 10
+    );
 
 
     unloadProgress += 0.05; // faster than loading
 
-    if (unloadProgress >= 1) clearInterval(interval);
+    if (unloadProgress >= 1) {
+  unloadProgress = 1;   // clamp
+
+  // 🔴 FINAL FORCED DRAW
+  drawBaseGraph();
+
+  // redraw loading curve
+  ctx.strokeStyle = "#c1121f";
+  ctx.beginPath();
+  loadingPoints.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  });
+  ctx.stroke();
+
+  // 🔵 FINAL unloading curve TOUCHING X AXIS
+  ctx.beginPath();
+  ctx.moveTo(peakPoint.x, peakPoint.y);
+  ctx.lineTo(
+    peakPoint.x - gWidth * 0.35,
+    origin.y   // 🔥 EXACT X-AXIS
+  );
+  ctx.stroke();
+
+  clearInterval(interval);
+}
+
   }, 30);
 }
 
@@ -292,4 +323,33 @@ function display3d() {
     </div>
   `;
   heading.innerText = '3-Dimentional view'
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function showformula() {
+  document.getElementById("formulaModal").style.display = "flex";
+}
+
+function closeFormula() {
+  document.getElementById("formulaModal").style.display = "none";
 }
