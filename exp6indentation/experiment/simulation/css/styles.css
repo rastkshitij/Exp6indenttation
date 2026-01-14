@@ -1,0 +1,378 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #eef2f7;
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  height: 70px;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+
+
+.header h1 {
+  font-size: 20px;
+}
+
+.header p {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.procedure-btn {
+  background: white;
+  color: #1e40af;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Reset button (secondary) */
+.reset-btn {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255,255,255,0.8);
+  padding: 9px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reset-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 900;
+}
+
+.modal {
+  width: 480px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.modal-top span {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Workspace */
+.workspace {
+  display: flex;
+  height: calc(100vh - 70px);
+}
+
+/* Controls */
+.controls {
+  width: 230px;
+  background: #ffffff;
+  padding: 40px;
+  border-right: 1px solid #dbe1ea;
+}
+
+.controls h3 {
+  margin-bottom: 15px;
+}
+
+.controls button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #f1f5f9;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.controls button:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.controls .primary {
+  background: #2563eb;
+  color: white;
+}
+.primary:disabled{
+  background: #b2b0b0;
+}
+/* Simulation */
+.simulation {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 200px;
+}
+
+.sim-upper {
+  flex: 3;
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+
+}
+.placeholder #heading{
+    color: rgb(255, 255, 255);
+    position: absolute;
+    border-radius: 5px;
+    padding: 5px 5px;
+    border: 2px solid white;
+    background: rgba(255, 255, 255, 0);
+    top: 1%;
+    left: 40%;
+    transform: translate(50% ,50);
+    font-size: 20px;
+    font-family:'Segoe UI', sans-serif;
+    font-weight: 600;
+}
+
+.placeholder {
+  height: 90%;
+  margin-top: 10px;
+  border-radius: 10px;
+  background: rgb(79, 133, 160);
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.svg-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;   /* 🔑 stops expansion */
+  position: relative;
+}
+.display3dview {
+  position: absolute;
+  
+  height: 100%;
+  right:20%;
+}
+
+.display3dview svg {
+  height: 110%;
+  width: 110%;
+  display: block;
+}
+
+
+.responsive-svg {
+  height: 100%;
+  width: auto;        /* keeps aspect ratio */
+  max-width: 100%;
+}
+
+.svg-container .pointer{
+  position: absolute;
+  z-index: 200;
+  top: 15%;
+    right: 50%;
+  
+  transform: translateY(0);
+  transition: transform 5s linear;
+  will-change: transform;
+}
+.svg-container .svg-base{
+  position: absolute;
+  z-index: 100;
+  top: 40%;
+  right: 50%;
+}
+.graph  {
+  height: 250px;
+  margin: 1px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  width: 250px;
+  background: white;
+  position: fixed;
+  min-height: 200px;
+  min-width: 200px;
+top: 25%;
+  right: 5%;
+  z-index: 500;
+}
+.svg-container svg {
+  width: 100%;
+  height: 100%;
+}
+.display3dview{
+  height: 100%;
+  width: 100%;
+}
+
+.sim-lower {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+
+
+
+/* ============================= */
+/* RESPONSIVE LAYER – SAFE MODE  */
+/* ============================= */
+
+/* Tablets & below */
+@media (max-width: 1024px) {
+
+  .workspace {
+    flex-direction: column;
+  }
+
+  .controls {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #dbe1ea;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .controls h3 {
+    width: 100%;
+  }
+
+  .controls button {
+    width: calc(50% - 10px);
+  }
+
+  .simulation {
+    padding: 15px;
+  }
+
+  .svg-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .graph {
+    position: relative;
+    right: auto;
+    margin: 20px auto;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 600px) {
+
+  /* Header */
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .header-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Controls */
+  .controls {
+    flex-direction: column;
+  }
+
+  .controls button {
+    width: 100%;
+  }
+
+  /* Simulation blocks */
+  .sim-upper,
+  .sim-lower {
+    padding: 15px;
+  }
+
+  .placeholder {
+    height: auto;
+    min-height: 250px;
+  }
+
+  /* SVG handling */
+  .svg-container {
+    margin: 15px auto;
+    width: 100%;
+    height: 250px;
+  }
+
+  .svg-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Graph */
+  .graph {
+    width: 90%;
+    top: 50%;
+    right: 0%;
+    position: fixed;
+    min-width: unset;
+  }
+
+  /* Modal */
+  .modal {
+    width: 90%;
+  }
+
+  /* Heading inside placeholder */
+  .placeholder #heading {
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+  }
+}

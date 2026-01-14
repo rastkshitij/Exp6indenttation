@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Virtual Lab Experiment</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div>
+    <h1>Indentation</h1>
+    <p>Material texting laboratory</p>
+  </div>
+   <div class="header-actions">
+    <button class="procedure-btn" onclick="openProcedure()">Procedure</button>
+    <button class="reset-btn" onclick="resetExperiment()">Reset</button>
+  </div>
+</header>
+
+<!-- Procedure Modal -->
+<div class="overlay" id="procedure">
+  <div class="modal">
+    <div class="modal-top">
+      <h2>Experiment Procedure</h2>
+      <span onclick="closeProcedure()">✕</span>
+    </div>
+    <ol>
+      <li>Understand the experiment objective.</li>
+      <li>Initialize the system using control buttons.</li>
+      <li>Adjust parameters carefully.</li>
+      <li>Observe results in the simulation panel.</li>
+      <li>Record observations below.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="workspace">
+
+  <!-- Controls -->
+  <aside class="controls">
+    <h3>Control Panel</h3>
+    <button class="primary" id='dis2d'onclick="display2d()">Two-Dimentional View</button>
+    <button class="primary" id="indent" onclick="movedown()">Indent</button>
+    <button class="primary" id="reset" onclick="moveup('./base2-1.png')">Remove load</button>
+    <button class="primary"  id="display3d" onclick="display3d()">Three Dimentional View</button>
+  </aside>
+
+  <!-- Simulation Area -->
+  <section class="simulation">
+
+    <div class="sim-upper">
+      <h3>Simulation Area</h3>
+       <div class="placeholder">
+        <h1 id="heading">Machine Over View</h1>
+       <div class="graph">
+        <canvas id="miniGraph" width="230" height="230"></canvas>
+       </div>
+        
+      <div class="svg-container">
+
+      </div>
+      
+      </div>
+    
+    </div>
+
+    <div class="sim-lower">
+      <h3>Observations</h3>
+      <p>Status messages and readings appear here.</p>
+    </div>
+
+  </section>
+
+</div>
+
+<script src="./js/main.js"></script>
+</body>
+</html>
