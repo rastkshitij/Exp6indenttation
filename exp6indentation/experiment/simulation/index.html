@@ -42,6 +42,35 @@
   <!-- Controls -->
   <aside class="controls">
     <h3>Control Panel</h3>
+
+    <button class="primary" id="textarea" onclick="textar()">
+  Perform Indentation Test
+</button>
+
+<div id="indentPanel" class="indent-panel">
+
+  <div class="input-row">
+    <label>Force</label>
+    <div class="input-unit">
+      <input type="number" id="forceInput" step="0.1" min="0.1" max="10">
+      <span>mN</span>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label>Holding Time</label>
+    <div class="input-unit">
+      <input type="number" id="timeInput" step="1" min="1">
+      <span>s</span>
+    </div>
+  </div>
+
+  <button id="submitIndent" class="primary" disabled onclick="submitIndent()">
+    Submit
+  </button>
+
+</div>
+
     <button class="primary" id='dis2d'onclick="display2d()">Two-Dimentional View</button>
     <button class="primary" id="indent" onclick="movedown()">Indent</button>
     <button class="primary" id="reset" onclick="moveup('./base2-1.png')">Remove load</button>
@@ -60,7 +89,7 @@
        <div class="placeholder">
         <h1 id="heading">Machine Over View</h1>
        <div class="graph">
-        <canvas id="miniGraph" width="230" height="230"></canvas>
+        <canvas id="miniGraph" width="260" height="230"></canvas>
        </div>
         
       <div class="svg-container">
@@ -177,6 +206,13 @@
     </form>
   </div>
 </div>
+
+
+
+
+
+
+
 
 </body>
 </html>
