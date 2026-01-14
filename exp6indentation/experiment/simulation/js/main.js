@@ -353,3 +353,39 @@ function showformula() {
 function closeFormula() {
   document.getElementById("formulaModal").style.display = "none";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("startupOverlay");
+  const form = document.getElementById("startupForm");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const choice = document.querySelector(
+      'input[name="choice"]:checked'
+    ).value;
+
+    if (choice === "youtube") {
+      window.open("https://virtual-labs.github.io/exp-scratch-toughness-estimation-iitk/", "_blank");
+    }
+
+    // Remove popup
+    overlay.style.display = "none";
+  });
+});

@@ -47,6 +47,7 @@
     <button class="primary" id="reset" onclick="moveup('./base2-1.png')">Remove load</button>
     <button class="primary"  id="display3d" onclick="display3d()">Three Dimentional View</button>
     <button class="primary"  id="formula" onclick="showformula()">Formulae Use</button>
+    
   </aside>
 
 
@@ -155,5 +156,27 @@
 
 
 <script src="./js/main.js"></script>
+<!-- Startup Popup -->
+<div id="startupOverlay" class="startup-overlay">
+  <div class="startup-modal">
+    <h2>Do you know about "Micro-scratching of materials and damage assessment"</h2>
+    <p>Please Select Yes or No</p>
+
+    <form id="startupForm">
+      <label class="option">
+        <input type="radio" name="choice" value="page" required>
+        Yes I Know
+      </label>
+
+      <label class="option">
+        <input type="radio" name="choice" value="youtube">
+        No, I want to know
+      </label>
+
+      <button type="submit" class="primary">Submit</button>
+    </form>
+  </div>
+</div>
+
 </body>
 </html>
