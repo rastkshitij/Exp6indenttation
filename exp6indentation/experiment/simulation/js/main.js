@@ -11,6 +11,13 @@ function resetExperiment() {
 
 
 
+let holdTime = 0;          // seconds (user input)
+let holdProgress = 0;     // 0 → 1
+let isHolding = false;
+let holdPoints = [];
+
+
+
 let heading = document.getElementById('heading');
 let svgContainer = document.querySelector('.svg-container');
 let pointer = document.querySelector('.pointer')
@@ -69,6 +76,7 @@ function initGraph() {
 const origin = { x: 40, y: 190 };
 const gWidth = 160;
 const gHeight = 140;
+
 
 let loadProgress = 0;
 let unloadProgress = 0;
@@ -175,14 +183,23 @@ function drawLoadingCurve() {
     loadProgress += 0.02;
 
     if (loadProgress >= 1) {
-      peakPoint = loadingPoints[loadingPoints.length - 1];
-      clearInterval(interval);
-    }
+  peakPoint = loadingPoints[loadingPoints.length - 1];
+  clearInterval(interval);
+
+  if (holdTime > 0) {
+    isHolding = true;
+    drawHoldingCurve();
+  } else {
+    drawUnloadingCurve();
+  }
+}
+
   }, 95); // slow & smooth (loading)
 }
 
 function drawUnloadingCurve() {
-  if (!peakPoint || unloadProgress >= 1) return;
+  if (!peakPoint || isHolding || unloadProgress >= 1) return;
+
 
   const interval = setInterval(() => {
     drawBaseGraph();
@@ -298,6 +315,77 @@ function drawSlopeS() {
 }
 
 
+
+
+
+
+
+
+
+
+
+function drawHoldingCurve() {
+  holdProgress = 0;
+  holdPoints = [];
+
+  const totalHoldSteps = holdTime * 20; // smoothness (20 frames/sec)
+
+  const interval = setInterval(() => {
+    drawBaseGraph();
+
+    // redraw loading
+    ctx.strokeStyle = "#c1121f";
+    ctx.beginPath();
+    loadingPoints.forEach((p, i) => {
+      if (i === 0) ctx.moveTo(p.x, p.y);
+      else ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+
+    // holding curve (horizontal)
+    ctx.strokeStyle = "#f59e0b";
+    ctx.beginPath();
+
+    const dx = gWidth * 0.02;
+    const x = peakPoint.x + dx * holdProgress;
+    const y = peakPoint.y;
+
+    holdPoints.push({ x, y });
+
+    if (holdPoints.length === 1) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+
+    ctx.stroke();
+
+    holdProgress++;
+
+    if (holdProgress >= totalHoldSteps) {
+      clearInterval(interval);
+      isHolding = false;
+      drawUnloadingCurve();
+      autoMovePointerUp();
+    }
+  }, 50);
+}
+
+
+
+
+
+
+
+
+
+
+function autoMovePointerUp() {
+  const pointer = document.querySelector('.pointer');
+  if (!pointer) return;
+
+  pointer.style.transition = "transform 1s linear";
+  pointer.style.transform = "translateY(0px)";
+}
+
+
 function display3d() {
   svgContainer.innerHTML = `
     <div class="display3dview">
@@ -389,3 +477,74 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "none";
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function textar() {
+  document.getElementById("indentPanel").style.display = "block";
+}
+
+const forceInput = document.getElementById("forceInput");
+const timeInput = document.getElementById("timeInput");
+const submitBtn = document.getElementById("submitIndent");
+
+function validateInputs() {
+  const force = parseFloat(forceInput.value);
+  const time = parseFloat(timeInput.value);
+
+  if (force >= 0.1 && force <= 10 && time > 0) {
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.disabled = true;
+  }
+}
+
+// function submitIndent() {
+//   console.log("Submitted Force:", forceInput.value, "mN");
+//   console.log("Submitted Time:", timeInput.value, "s");
+
+//   // Disable submit after click
+//   submitBtn.disabled = true;
+
+
+//   // later logic will go here
+// }
+
+
+function submitIndent() {
+  holdTime = parseFloat(timeInput.value); // seconds
+  submitBtn.disabled = true;
+
+  console.log("Holding Time:", holdTime);
+}
+
+
+forceInput.addEventListener("input", validateInputs);
+timeInput.addEventListener("input", validateInputs);
