@@ -381,9 +381,24 @@ function autoMovePointerUp() {
   const pointer = document.querySelector('.pointer');
   if (!pointer) return;
 
+  // Move pointer up
   pointer.style.transition = "transform 1s linear";
   pointer.style.transform = "translateY(0px)";
+
+  // 🔄 Auto change material image
+  const img = document.getElementById("baseimage");
+  if (img) {
+    const newSrc = "./base2-1.png";
+
+    img.setAttribute("href", newSrc);
+    img.setAttributeNS(
+      "http://www.w3.org/1999/xlink",
+      "xlink:href",
+      newSrc
+    );
+  }
 }
+
 
 
 function display3d() {
