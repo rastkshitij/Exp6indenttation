@@ -11,6 +11,16 @@ function resetExperiment() {
 
 
 
+const CONTACT_Y = 60; // px → sample surface
+let pointerState = "up"; 
+// up | touching | leaving
+
+let animPhase = "idle";
+let animT = 0;
+let holdStartTime = null;
+
+
+
 let holdTime = 0;          // seconds (user input)
 let holdProgress = 0;     // 0 → 1
 
@@ -78,8 +88,8 @@ marker++;
 //graph code 
 let canvas, ctx;
 // ===================
-let animPhase = "idle";   // loading | holding | unloading
-let animT = 0;
+  // loading | holding | unloading
+
 
 
 
@@ -146,8 +156,7 @@ function drawBaseGraph() {
 );
 
 }
-
-function animateIndentationCurve() {
+function animateIndentationCurve(timestamp) {
   drawBaseGraph();
 
   ctx.strokeStyle = "#000";
@@ -157,100 +166,79 @@ function animateIndentationCurve() {
   const loadExp = 2.0;
   const unloadExp = 1.5;
 
-  // ---------- LOADING ----------
+  /* ================= LOADING ================= */
   if (animPhase === "loading") {
-    animT += 0.01; // ~2 seconds
+    animT += 0.015;
 
     for (let i = 0; i <= animT * 100; i++) {
       const t = i / 100;
       const h = hmax * t;
       const P = Pmax * Math.pow(t, loadExp);
-
-      const x = origin.x + h;
-      const y = origin.y - P;
-
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      ctx.lineTo(origin.x + h, origin.y - P);
     }
-
     ctx.stroke();
 
     if (animT < 1) {
       requestAnimationFrame(animateIndentationCurve);
-   } else {
-  // ⏸ delay before holding
-  setTimeout(() => {
-    animPhase = "holding";
-    animT = 0;
-    holdDelayDone = true;
-    requestAnimationFrame(animateIndentationCurve);
-  }, 500); // 500 ms delay
-}
-
+    } else {
+      animPhase = "holding";
+      holdStartTime = performance.now(); // ✅ single hold timer
+      requestAnimationFrame(animateIndentationCurve);
+    }
     return;
   }
 
-  // ---------- HOLDING ----------
+  /* ================= HOLDING ================= */
   if (animPhase === "holding") {
-    animT += 0.01;
-setTimeout(() => {
-  animPhase = "unloading";
-  animT = 0;
-  requestAnimationFrame(animateIndentationCurve);
-}, holdTime * 1000); // holding time in seconds
-
     // draw full loading
     for (let i = 0; i <= 100; i++) {
       const t = i / 100;
-      const h = hmax * t;
-      const P = Pmax * Math.pow(t, loadExp);
-      ctx.lineTo(origin.x + h, origin.y - P);
+      ctx.lineTo(
+        origin.x + hmax * t,
+        origin.y - Pmax * Math.pow(t, loadExp)
+      );
     }
 
-    const hx =
-      origin.x + hmax + holdLength * Math.min(animT, 1);
-
-    ctx.lineTo(hx, origin.y - Pmax);
+    // draw hold line
+    ctx.lineTo(
+      origin.x + hmax + holdLength,
+      origin.y - Pmax
+    );
     ctx.stroke();
 
-   if (animT < 1) {
-  requestAnimationFrame(animateIndentationCurve);
-} else {
-  // ✅ holding finished → wait for pointer up OR auto unload
-}
+    if (performance.now() - holdStartTime < holdTime * 1000) {
+      requestAnimationFrame(animateIndentationCurve);
+    } else {
+      startUnloading(); // ✅ single transition
+    }
     return;
   }
 
-  // ---------- UNLOADING ----------
+  /* ================= UNLOADING ================= */
   if (animPhase === "unloading") {
-    animT += 0.01;
+    animT += 0.015;
 
-    // draw loading
+    // loading
     for (let i = 0; i <= 100; i++) {
       const t = i / 100;
-      const h = hmax * t;
-      const P = Pmax * Math.pow(t, loadExp);
-      ctx.lineTo(origin.x + h, origin.y - P);
+      ctx.lineTo(
+        origin.x + hmax * t,
+        origin.y - Pmax * Math.pow(t, loadExp)
+      );
     }
 
-    // draw holding
+    // holding
     ctx.lineTo(
       origin.x + hmax + holdLength,
       origin.y - Pmax
     );
 
-    // draw unloading
+    // unloading curve
     for (let i = 0; i <= animT * 100; i++) {
       const t = i / 100;
       const h = (1 - t) * hmax + t * hf;
-      const P =
-        Pmax *
-        Math.pow((h - hf) / (hmax - hf), unloadExp);
-
-      ctx.lineTo(
-        origin.x + h + holdLength,
-        origin.y - P
-      );
+      const P = Pmax * Math.pow((h - hf) / (hmax - hf), unloadExp);
+      ctx.lineTo(origin.x + h + holdLength, origin.y - P);
     }
 
     ctx.stroke();
@@ -260,6 +248,36 @@ setTimeout(() => {
     }
   }
 }
+
+
+
+
+
+
+function startUnloading() {
+  if (pointerState !== "touching") return;
+
+  pointerState = "leaving";
+  animPhase = "unloading";
+  animT = 0;
+
+  const pointer = document.querySelector(".pointer");
+  pointer.style.transition = "transform 0.8s linear";
+  pointer.style.transform = "translateY(0px)";
+
+  // 🟢 CONTACT BROKEN → CHANGE MATERIAL IMAGE
+  const img = document.getElementById("baseimage");
+  if (img) {
+    img.setAttributeNS(
+      "http://www.w3.org/1999/xlink",
+      "xlink:href",
+      "./base2-1.png"
+    );
+  }
+
+  requestAnimationFrame(animateIndentationCurve);
+}
+
 
 
 //graph code 
@@ -267,20 +285,28 @@ setTimeout(() => {
 
 
 function movedown() {
-
-  const pointer = document.querySelector('.pointer');
+  const pointer = document.querySelector(".pointer");
   if (!pointer) return;
 
-  pointer.style.transform = "translateY(60px)";
-animPhase = "loading";
-animT = 0;
-holdLength = Math.min(holdTime * 8, gWidth * 0.2);
-requestAnimationFrame(animateIndentationCurve);
+  pointerState = "touching";
 
-setTimeout(()=>{
-autoMovePointerUp()
-}, time*1000)
+  pointer.style.transition = "transform 0.8s linear";
+  pointer.style.transform = `translateY(${CONTACT_Y}px)`;
+
+  // ⏳ Wait until pointer actually reaches the sample
+  setTimeout(() => {
+    // 🟢 CONTACT MADE → START LOADING GRAPH
+    animPhase = "loading";
+    animT = 0;
+    holdStartTime = null;
+
+    holdLength = Math.min(holdTime * 8, gWidth * 0.2);
+    requestAnimationFrame(animateIndentationCurve);
+  }, 600); // same as pointer transition time
 }
+
+  btnarray[marker].style.display='block';
+marker++;
 
 let pointerY = 0;
 
@@ -405,7 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ).value;
 
     if (choice === "youtube") {
-      window.open("https://virtual-labs.github.io/exp-scratch-toughness-estimation-iitk/", "_blank");
+      window.open("https://virtual-labs.github.io/exp-micro-scratching-iitk/", "_blank");
     }
 
     // Remove popup
