@@ -7,7 +7,7 @@
 
 body {
   background: #eef2f7;
-  height: 100vh;
+ 
 }
 
 /* Header */
@@ -103,8 +103,9 @@ body {
 /* Workspace */
 .workspace {
   display: flex;
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px); /* allows page to grow */
 }
+
 
 /* Controls */
 .controls {
@@ -140,7 +141,7 @@ body {
   color: white;
 }
 .primary:disabled{
-  background: #b2b0b0;
+  background: #fbe6e6;
 }
 /* Simulation */
 .simulation {
@@ -150,6 +151,11 @@ body {
   flex-direction: column;
   gap: 20px;
   min-width: 200px;
+}
+.controls,
+.sim-upper,
+.sim-lower {
+  flex-shrink: 0;
 }
 
 .sim-upper {
@@ -161,6 +167,10 @@ body {
 
 
 }
+.sim-upper {
+  min-height: 70%; /* adjust if needed */
+}
+
 .placeholder #heading{
     color: rgb(255, 255, 255);
     position: absolute;
@@ -239,7 +249,7 @@ body {
   position: absolute;
   min-height: 200px;
   min-width: 200px;
-top: 15%;
+top: 5%;
   right: 5%;
   z-index: 500;
 }
@@ -251,15 +261,14 @@ top: 15%;
   height: 100%;
   width: 100%;
 }
-
 .sim-lower {
   flex: 1;
   background: white;
   border-radius: 14px;
   padding: 20px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+   /* 🔑 enables vertical scroll */
 }
-
 
 
 
@@ -669,4 +678,14 @@ top: 15%;
 #submitIndent:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+#Popupbtn{
+  background: linear-gradient(to right ,rgb(25, 66, 215) ,rgb(11, 106, 213));
+  border:2px solid royalblue;
+  font: uppercase;
+  color: white;
+  padding: 10px 10px;
+  font-size: 15px;
+  border-radius: 10px ;
+
 }

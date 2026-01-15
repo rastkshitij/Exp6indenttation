@@ -20,6 +20,8 @@ let dis2dbtn = document.querySelector('#dis2d');
 let indentbtn  = document.querySelector('#indent');
 let dis3btn = document.querySelector("#display3d");
 let formulabtn = document.querySelector('#formula');
+let tableobs = document.querySelector('.parameter-block')
+tableobs.style.display ='none';
 let marker =0
 let btnarray = [dis2dbtn ,indentbtn , dis3btn,formulabtn];
 btnarray.forEach(element => {
@@ -95,6 +97,14 @@ let unloadProgress = 0;
 let peakPoint = null;
 let loadingPoints = [];
 let unloadingPoints = [];
+const loadSteps = 120;     // smoothness
+const unloadSteps = 120;
+
+let stepIndex = 0;
+let holdStartTime = null;
+let holdY = null;
+let maxDepth = 0;
+
 
 function drawBaseGraph() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -132,15 +142,12 @@ function drawBaseGraph() {
 
 
 
-
-
 function movedown() {
-  btnarray[marker].style.display='block';
-marker++;
+
   const pointer = document.querySelector('.pointer');
   if (!pointer) return;
 
-  pointer.style.transform = "translateY(85px)";
+  pointer.style.transform = "translateY(60px)";
   drawLoadingCurve();
 
 }
@@ -148,6 +155,8 @@ marker++;
 let pointerY = 0;
 
 function moveup(newSrc) {
+  btnarray[marker].style.display='block';
+marker++;
   const pointer = document.querySelector('.pointer');
   if (!pointer) return;
 
@@ -166,8 +175,7 @@ function moveup(newSrc) {
     newSrc
   );
   drawUnloadingCurve();
-btnarray[marker].style.display='block';
-marker++;
+
 }
 
 
@@ -329,16 +337,6 @@ function drawSlopeS() {
   ctx.fillText("S", p0.x + ux * 15, p0.y + uy * 15);
 }
 
-
-
-
-
-
-
-
-
-
-
 function drawHoldingCurve() {
   holdProgress = 0;
   holdPoints = [];
@@ -392,7 +390,19 @@ function drawHoldingCurve() {
 
 
 
+
+
+
+
+
+
+
+
+
+
 function autoMovePointerUp() {
+  btnarray[marker].style.display='block';
+marker++;
   const pointer = document.querySelector('.pointer');
   if (!pointer) return;
 
@@ -575,6 +585,7 @@ function submitIndent() {
   submitBtn.disabled = true;
 btnarray[marker].style.display='block';
 marker++;
+tableobs.style.display='block';
   console.log("Holding Time:", holdTime);
 }
 

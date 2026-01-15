@@ -65,7 +65,7 @@
       <span>s</span>
     </div>
     
-    <div class="range">Range: 0.1min - 10min</div>
+    <div class="range">Range: 0min - 10min</div>
   </div>
   <button id="submitIndent" class="primary" disabled onclick="submitIndent()">
     Submit
@@ -125,7 +125,10 @@
        <div class="placeholder">
         <h1 id="heading">Machine Over View</h1>
        <div class="graph">
-        <canvas id="miniGraph" width="260" height="230"></canvas>
+        <canvas id="miniGraph" width="260" height="230">
+          <div class="values">adsafsa</div>
+        </canvas>
+        
        </div>
         
       
@@ -267,7 +270,7 @@
         No, I want to know
       </label>
 
-      <button type="submit" class="primary">Submit</button>
+      <button type="submit" id="Popupbtn" class="primary">Submit</button>
     </form>
   </div>
 </div>
