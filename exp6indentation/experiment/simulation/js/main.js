@@ -59,7 +59,7 @@ marker++;
     </style>
   </defs>
   <path class="st0" d="M2081.5,316.5"/>
-  <image id='baseimage'width="1606" height="823" transform="translate(166.5 147)" xlink:href="base1-1.png"/>
+  <image id='baseimage'width="1606" height="823" transform="translate(166.5 147)" data-text="Material : metals, ceramics, polymers, composites, and biological tissues" xlink:href="base1-1.png"/>
 </svg></div>
 <div class="pointer">
         <?xml version="1.0" encoding="UTF-8"?>
@@ -76,14 +76,33 @@ marker++;
   </defs>
   <path class="st0" d="M2081.5,316.5"/>
   <g>
-    <image width="513" height="413" transform="translate(764.4 149)" xlink:href="pointer-1.png"/>
-    <image width="512" height="123" transform="translate(764.9 27.9)" xlink:href="pointer-2.png"/>
+    <image width="513" height="413" transform="translate(764.4 149)"  data-text="Berkovich tip" xlink:href="pointer-1.png"/>
+    <image width="512" height="123" transform="translate(764.9 27.9)" data-text="Berkovich tip" xlink:href="pointer-2.png"/>
   </g>
 </svg>
 </div>`
   setTimeout(initGraph, 0);
 
+  setTimeout(() => {
+  const images = svgContainer.querySelectorAll("svg image");
+  const infoBox = document.getElementById("infoBox");
+
+  console.log("Images found:", images.length);
+
+  images.forEach(img => {
+    img.addEventListener("mouseenter", () => {
+      infoBox.style.display = "block";
+      infoBox.textContent = img.getAttribute("data-text");
+    });
+
+    img.addEventListener("mouseleave", () => {
+      infoBox.style.display = "none";
+    });
+  });
+}, 0);
+
 }
+
 
 //graph code 
 let canvas, ctx;
@@ -361,9 +380,12 @@ function display3d() {
             xlink:href="nano indentation-1.png"/>
           <image width="629" height="984"
             transform="translate(201.4 172.9) scale(.2)"
+            data-text ="Material:metals, ceramics, polymers, composites, and biological tissues"
             xlink:href="nano indentation-2.png"/>
+            
           <image width="469" height="1184"
             transform="translate(196.5 181.9) scale(.2)"
+            data-text ="Material:metals, ceramics, polymers, composites, and biological tissues"
             xlink:href="nano indentation-3.png"/>
         </g>
       </svg>
@@ -514,3 +536,5 @@ function submitIndent() {
 
 forceInput.addEventListener("input", validateInputs);
 timeInput.addEventListener("input", validateInputs);
+
+
