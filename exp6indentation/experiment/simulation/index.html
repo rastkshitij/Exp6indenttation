@@ -300,7 +300,7 @@ stroke="#ffffff" marker-end="url(#arrow)"/>
 
     <div class="param-cell">
       <span class="param-label">Strain Rate</span>
-      <span class="param-value">0.05 s⁻¹</span>
+      <span class="param-value">0.005 s⁻¹</span>
     </div>
 
     <div class="param-cell">
@@ -337,62 +337,67 @@ stroke="#ffffff" marker-end="url(#arrow)"/>
 
     <h3>Nano-Indentation Formulae</h3>
 
-    <div class="formula-content">
+<div class="formula-content">
 
-      <p><b>Contact Depth</b></p>
-      <div class="formula">
-        h<sub>c</sub> = h − ε
-        <span class="frac">
-          <span>P</span>
-          <span>S</span>
-        </span>
-      </div>
-      <p>
-        where <b>h</b> is maximum indentation depth,  
-        <b>P</b> is maximum load,  
-        <b>S</b> is unloading stiffness,  
-        <b>ε ≈ 0.75</b> (Berkovich indenter).
-      </p>
+<p><b>Contact Depth</b></p>
+<div class="formula">
+  h<sub>c</sub>
+  <span class="eq">=</span>
+  h<sub>max</sub>
+  <span class="eq">−</span>
+  ε
+  <span class="frac">
+    <span>P</span>
+    <span>S</span>
+  </span>
+</div>
+<p>
+<b>h<sub>max</sub></b> = maximum indentation depth,  
+<b>P</b> = maximum load,  
+<b>S</b> = unloading stiffness,  
+<b>ε ≈ 0.75</b> (Berkovich indenter)
+</p>
 
-      <hr>
+<hr>
 
-      <p><b>Projected Contact Area</b></p>
-      <div class="formula">
-        A = f(h<sub>c</sub>)
-      </div>
-      <p>
-        Area function depends on indenter geometry.
-      </p>
+<p><b>Projected Contact Area</b></p>
+<div class="formula">
+  A
+  <span class="eq">=</span>
+  f(h<sub>c</sub>)
+</div>
+<p>Area function depends on indenter geometry.</p>
 
-      <hr>
+<hr>
 
-      <p><b>Hardness</b></p>
-      <div class="formula">
-        H =
-        <span class="frac">
-          <span>P</span>
-          <span>A</span>
-        </span>
-      </div>
-      <p>
-        Ratio of maximum load to projected contact area.
-      </p>
+<p><b>Hardness</b></p>
+<div class="formula">
+  H
+  <span class="eq">=</span>
+  <span class="frac">
+    <span>P</span>
+    <span>A</span>
+  </span>
+</div>
+<p>Ratio of maximum load to projected contact area.</p>
 
-      <hr>
+<hr>
 
-      <p><b>Elastic Modulus</b></p>
-      <div class="formula">
-        E =
-        <span class="frac">
-          <span>√π</span>
-          <span>2</span>
-        </span>
-        ·
-        <span class="frac">
-          <span>S</span>
-          <span>√A</span>
-        </span>
-      </div>
+<p><b>Elastic Modulus</b></p>
+<div class="formula">
+  E
+  <span class="eq">=</span>
+  <span class="frac">
+    <span>√π</span>
+    <span>2</span>
+  </span>
+  <span class="eq">·</span>
+  <span class="frac">
+    <span>S</span>
+    <span>√A</span>
+  </span>
+</div>
+
       <p>
         Calculated using unloading stiffness method.
       </p>
