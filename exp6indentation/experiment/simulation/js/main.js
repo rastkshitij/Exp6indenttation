@@ -194,7 +194,7 @@ function animateIndentationCurve(timestamp) {
 
   /* ================= LOADING ================= */
   if (animPhase === "loading") {
-    animT += 0.030;
+    animT += 0.010;
 
     for (let i = 0; i <= animT * 100; i++) {
       const t = i / 100;
@@ -316,7 +316,7 @@ function movedown() {
 
   pointerState = "touching";
 
-  pointer.style.transition = "transform 0.8s linear";
+  pointer.style.transition = "transform 2s linear";
   pointer.style.transform = `translateY(${CONTACT_Y}px)`;
 
   // ⏳ Wait until pointer actually reaches the sample
